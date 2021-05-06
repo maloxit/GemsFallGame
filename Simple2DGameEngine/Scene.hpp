@@ -1,20 +1,15 @@
 #pragma once
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#endif // _DEBUG
-#include <stdlib.h>
-#ifdef _DEBUG
-#include <crtdbg.h>
-#endif // _DEBUG
 #include <list>
 #include <memory>
 #include <ctime>
-#include "RenderManager.hpp"
-#include "GameObject.hpp"
-#include "EventManager.hpp"
+
+
 
 namespace GameEngine
 {
+  class GameObject;
+  class EventManager;
+  class RenderManager;
 
   class Scene
   {

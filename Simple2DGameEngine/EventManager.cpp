@@ -1,4 +1,9 @@
 #include "EventManager.hpp"
+
+#include "SDL.h"
+#include "GameWindow.hpp"
+#include "EventListener.hpp"
+
 namespace GameEngine
 {
     void EventManager::AddEventListener(const std::shared_ptr<EventListener>& eventListener)

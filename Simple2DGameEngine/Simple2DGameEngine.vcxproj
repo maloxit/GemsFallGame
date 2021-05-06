@@ -161,6 +161,7 @@
     <ClInclude Include="GameWindow.hpp" />
     <ClInclude Include="RenderManager.hpp" />
     <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="Simple2DGameEngine.hpp" />
     <ClInclude Include="Transform.hpp" />
     <ClInclude Include="Vectorf.hpp" />
   </ItemGroup>

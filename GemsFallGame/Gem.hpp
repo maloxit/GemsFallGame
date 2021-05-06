@@ -1,19 +1,10 @@
 #pragma once
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#endif // _DEBUG
-#include <stdlib.h>
-#ifdef _DEBUG
-#include <crtdbg.h>
-#endif // _DEBUG
-#include "Vectorf.hpp"
-#include "GameObject.hpp"
-#include "GemsGrid.hpp"
-#include "Transform.hpp"
+#include "Simple2DGameEngine.hpp"
 
 using namespace GameEngine;
 
 class GemsGrid;
+class Bonus;
 
 class Gem : public GameObject
 {
@@ -24,11 +15,15 @@ public:
   Transform transform;
   Vector2f targetPosition;
   GemsGrid& grid;
+  Bonus* bonus;
   std::shared_ptr<RenderObject> visuals;
   Gem(Scene& scene, GemsGrid& grid, bool enabled);
   void SetTypeAndPlace(int type, const Vector4uc& color, Vector2f& position, Vector2f& size);
+  void SetType(int type, const Vector4uc& color);
   void Hide();
   void Show();
+  void AddBonus(Bonus* bonus);
+  Bonus* RemoveBonus();
   virtual void Update(float deltaTime);
 };
 

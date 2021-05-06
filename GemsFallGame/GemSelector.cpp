@@ -1,5 +1,7 @@
 #include "GemSelector.hpp"
 
+#include "GemsGrid.hpp"
+
 GemSelector::GemSelector(Scene& scene, GemsGrid& grid, Vector2f& position, Vector2f& size) : GameObject(scene, false), EventListener(true), grid(grid), transform(position, size)
 {
 	moveSpeed = 2000.f;

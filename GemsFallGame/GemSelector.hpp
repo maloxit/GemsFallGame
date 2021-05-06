@@ -1,10 +1,6 @@
 #pragma once
 
-#include "GameObject.hpp"
-#include "EventListener.hpp"
-#include "Vectorf.hpp"
-#include "GemsGrid.hpp"
-#include "Transform.hpp"
+#include "Simple2DGameEngine.hpp"
 
 using namespace GameEngine;
 

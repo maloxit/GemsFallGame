@@ -1,5 +1,8 @@
 #include "RenderManager.hpp"
 
+#include "GameWindow.hpp"
+#include "Transform.hpp"
+
 namespace GameEngine
 {
   void RenderManager::DrawRenderPrimitive(RenderPrimitive& rendPrimitive, Transform& transform)

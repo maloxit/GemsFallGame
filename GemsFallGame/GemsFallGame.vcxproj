@@ -151,19 +151,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bomb.cpp" />
+    <ClCompile Include="Bonus.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Gem.cpp" />
     <ClCompile Include="GemSelector.cpp" />
     <ClCompile Include="GemsGameScene.cpp" />
     <ClCompile Include="GemsGrid.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Paint.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bomb.hpp" />
+    <ClInclude Include="Bonus.hpp" />
     <ClInclude Include="GameManager.hpp" />
     <ClInclude Include="Gem.hpp" />
     <ClInclude Include="GemSelector.hpp" />
     <ClInclude Include="GemsGameScene.hpp" />
     <ClInclude Include="GemsGrid.hpp" />
+    <ClInclude Include="Paint.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Simple2DGameEngine\Simple2DGameEngine.vcxproj">

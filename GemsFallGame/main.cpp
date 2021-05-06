@@ -5,16 +5,16 @@
 #ifdef _DEBUG
 #include <crtdbg.h>
 #endif // _DEBUG
-#include "SDL.h"
 #include <memory>
 #include <exception>
 
+#include "Simple2DGameEngine.hpp"
 #include "GameManager.hpp"
 
 void Poc()
 {
   SDL_Init(SDL_INIT_EVERYTHING);
-  std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>(std::make_shared<GameWindow>());
+  std::unique_ptr<GameManager> gameManager = std::make_unique<GameManager>(std::make_shared<GameWindow>(800, 800));
   gameManager->Run();
   SDL_Quit();
 }

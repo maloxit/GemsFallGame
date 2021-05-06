@@ -1,23 +1,13 @@
 #pragma once
-#ifdef _DEBUG
-#define _CRTDBG_MAP_ALLOC
-#endif // _DEBUG
-#include <stdlib.h>
-#ifdef _DEBUG
-#include <crtdbg.h>
-#endif // _DEBUG
 #include <vector>
 #include <stack>
-#include "RenderManager.hpp"
-#include "GameObject.hpp"
-#include "Scene.hpp"
-#include "Gem.hpp"
-#include "GemSelector.hpp"
-#include "Transform.hpp"
+#include "Simple2DGameEngine.hpp"
 
 using namespace GameEngine;
 
 class Gem;
+class Bomb;
+class Paint;
 
 class GemsGrid : public GameObject
 {
@@ -37,6 +27,8 @@ public:
   std::vector<std::vector<GemCell>> gemsMatrix;
   std::vector<Vector4uc> gemsTypes;
   std::stack<Gem*> hidenGems;
+  std::stack<Bomb*> hidenBombs;
+  std::stack<Paint*> hidenPaints;
   int gemAnimationCount;
   int rowsCount;
   int columnsCount;
@@ -49,6 +41,7 @@ public:
   void CellToPosition(Vector2f& position, int row, int column);
   void Select(int row, int column);
   void ProcessGrid();
+  void GenerateBonuses();
   int ClearCombos();
   int InitFall();
   void GemDisabled();

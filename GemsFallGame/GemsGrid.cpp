@@ -1,5 +1,10 @@
 #include "GemsGrid.hpp"
 
+#include "Paint.hpp"
+#include "Bomb.hpp"
+#include "Gem.hpp"
+#include "GemSelector.hpp"
+
 bool GemsGrid::IsNeighbors(int row1, int column1, int row2, int column2)
 {
   int rowDiff = row1 - row2;
@@ -41,7 +46,14 @@ void GemsGrid::Select(int row, int column)
   case GameState::WAITING_FIRST_SELECT:
     selectRow1 = row;
     selectColumn1 = column;
-    state = GameState::WAITING_SECOND_SELECT;
+    if (gemsMatrix[selectRow1][selectColumn1].gem->bonus != nullptr)
+    {
+      gemsMatrix[selectRow1][selectColumn1].gem->bonus->Exeñute(*this, selectRow1, selectColumn1);
+    }
+    else
+    {
+      state = GameState::WAITING_SECOND_SELECT;
+    }
     break;
   case GameState::WAITING_SECOND_SELECT:
     selectRow2 = row;
@@ -121,6 +133,65 @@ void GemsGrid::ProcessGrid()
   }
 }
 
+void GemsGrid::GenerateBonuses()
+{
+  for (int row = 0; row < rowsCount; row++)
+  {
+    for (int column = 0; column < columnsCount; column++)
+    {
+      if (gemsMatrix[row][column].gem == nullptr)
+      {
+        int side = rand() % 4;
+        int chanse = rand() % 100;
+        int bonusRow;
+        int bonusColumn;
+        if (chanse < 4)
+        {
+          switch (side)
+          {
+          case 0:
+            bonusRow = row;
+            bonusColumn = column - 1;
+            break;
+          case 1:
+            bonusRow = row;
+            bonusColumn = column + 1;
+            break;
+          case 2:
+            bonusRow = row - 1;
+            bonusColumn = column;
+            break;
+          case 3:
+            bonusRow = row + 1;
+            bonusColumn = column;
+            break;
+          default:
+            break;
+          }
+          if (bonusRow >= 0 && bonusColumn >= 0 && bonusRow < rowsCount && bonusColumn < columnsCount)
+          {
+            if (gemsMatrix[bonusRow][bonusColumn].gem != nullptr && gemsMatrix[bonusRow][bonusColumn].gem->bonus == nullptr)
+            {
+              if (chanse % 2 == 0 && !hidenPaints.empty())
+              {
+                auto bonus = hidenPaints.top();
+                hidenPaints.pop();
+                gemsMatrix[bonusRow][bonusColumn].gem->AddBonus(bonus);
+              }
+              else if (chanse % 2 == 1 && !hidenBombs.empty())
+              {
+                auto bonus = hidenBombs.top();
+                hidenBombs.pop();
+                gemsMatrix[bonusRow][bonusColumn].gem->AddBonus(bonus);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 int GemsGrid::ClearCombos()
 {
   int clearCount = 0;
@@ -151,41 +222,37 @@ int GemsGrid::ClearCombos()
         if (gemsMatrix[row][column].gem != nullptr)
         {
           gemsMatrix[row][column].gem->Hide();
-          hidenGems.push(gemsMatrix[row][column].gem);
           gemsMatrix[row][column].gem = nullptr;
           clearCount++;
         }
         if (row > 0 && gemsMatrix[row - 1][column].type == type && gemsMatrix[row - 1][column].gem != nullptr)
         {
           gemsMatrix[row - 1][column].gem->Hide();
-          hidenGems.push(gemsMatrix[row - 1][column].gem);
           gemsMatrix[row - 1][column].gem = nullptr;
           clearCount++;
         }
         if (column > 0 && gemsMatrix[row][column - 1].type == type && gemsMatrix[row][column - 1].gem != nullptr)
         {
           gemsMatrix[row][column - 1].gem->Hide();
-          hidenGems.push(gemsMatrix[row][column - 1].gem);
           gemsMatrix[row][column - 1].gem = nullptr;
           clearCount++;
         }
         if (row < rowsCount - 1 && gemsMatrix[row + 1][column].type == type && gemsMatrix[row + 1][column].gem != nullptr)
         {
           gemsMatrix[row + 1][column].gem->Hide();
-          hidenGems.push(gemsMatrix[row + 1][column].gem);
           gemsMatrix[row + 1][column].gem = nullptr;
           clearCount++;
         }
         if (column < columnsCount - 1 && gemsMatrix[row][column + 1].type == type && gemsMatrix[row][column + 1].gem != nullptr)
         {
           gemsMatrix[row][column + 1].gem->Hide();
-          hidenGems.push(gemsMatrix[row][column + 1].gem);
           gemsMatrix[row][column + 1].gem = nullptr;
           clearCount++;
         }
       }
     }
   }
+  GenerateBonuses();
   return clearCount;
 }
 
@@ -214,10 +281,6 @@ int GemsGrid::InitFall()
         }
         if (searchRow < 0)
         {
-          if (hidenGems.empty())
-          {
-            throw 1231;
-          }
           Gem* gem = hidenGems.top();
           hidenGems.pop();
           int r = rand() % 5;
@@ -303,7 +366,19 @@ GemsGrid::GemsGrid(Scene& scene, int rowsCount, int columnsCount) : GameObject(s
       gem->SetTypeAndPlace(r, gemsTypes[r], gemPosition, cellSize);
     }
   }
-
+  for (int i = 0; i < 5; i++)
+  {
+    auto paint = std::make_shared<Paint>(scene, selectorPosition, cellSize, false);
+    scene.AddGameObject(std::static_pointer_cast<GameObject, Paint>(paint));
+    paint->Hide(*this);
+  }
+  for (int i = 0; i < 5; i++)
+  {
+    auto bomb = std::make_shared<Bomb>(scene, selectorPosition, cellSize, false);
+    scene.AddGameObject(std::static_pointer_cast<GameObject, Bomb>(bomb));
+    bomb->Hide(*this);
+  }
+  
   state = GameState::WAITING_FIRST_SELECT;
 }
 

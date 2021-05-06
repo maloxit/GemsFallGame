@@ -1,4 +1,10 @@
 #include "Scene.hpp"
+
+#include "SDL.h"
+#include "EventManager.hpp"
+#include "RenderManager.hpp"
+#include "GameObject.hpp"
+
 namespace GameEngine
 {
   Scene::Scene(std::shared_ptr<EventManager>& eventManager, std::shared_ptr<RenderManager>& renderManager)

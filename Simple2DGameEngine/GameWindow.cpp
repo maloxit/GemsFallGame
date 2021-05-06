@@ -1,4 +1,7 @@
 #include "GameWindow.hpp"
+
+#include "SDL.h"
+
 namespace GameEngine
 {
   GameWindow::GameWindow() :GameWindow(1000, 800)

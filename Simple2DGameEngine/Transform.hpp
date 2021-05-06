@@ -1,6 +1,5 @@
 #pragma once
 
-#include "SDL.h"
 #include "Vectorf.hpp"
 
 namespace GameEngine
