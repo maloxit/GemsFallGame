@@ -3,9 +3,13 @@
 
 using namespace GameEngine;
 
+class GemsGrid;
+
 class GemsGameScene : public Scene
 {
+private:
+  std::shared_ptr<GemsGrid> gemsGrid;
 public:
-  GemsGameScene(std::shared_ptr<EventManager>& eventManager, std::shared_ptr<RenderManager>& renderManager);
+  GemsGameScene(const std::shared_ptr<EventManager>& eventManager, const std::shared_ptr<RenderManager>& renderManager);
 };
 

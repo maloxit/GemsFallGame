@@ -1,6 +1,6 @@
 #include "GameManager.hpp"
 
-GameManager::GameManager(std::shared_ptr<GameWindow> gameWindow)
+GameManager::GameManager(const std::shared_ptr<GameWindow>& gameWindow)
 {
   eventManager = std::make_shared<EventManager>(gameWindow);
   renderManager = std::make_shared<RenderManager>(gameWindow, Vector4uc(0, 0, 0, 255));

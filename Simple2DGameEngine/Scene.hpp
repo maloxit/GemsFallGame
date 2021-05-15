@@ -7,20 +7,20 @@
 
 namespace GameEngine
 {
-  class GameObject;
+  class Updatable;
   class EventManager;
   class RenderManager;
 
   class Scene
   {
   private:
-    std::unique_ptr<std::list<std::shared_ptr<GameObject>>> gameObjectList;
+    std::list<std::weak_ptr<Updatable>> updateList;
     void Update(float dtSeconds);
   public:
-    std::shared_ptr<EventManager> eventManager;
-    std::shared_ptr<RenderManager> renderManager;
-    Scene(std::shared_ptr<EventManager>& eventManager, std::shared_ptr<RenderManager>& renderManager);
-    void AddGameObject(const std::shared_ptr<GameObject>& gameObject);
+    const std::shared_ptr<EventManager> eventManager;
+    const std::shared_ptr<RenderManager> renderManager;
+    Scene(const std::shared_ptr<EventManager>& eventManager, const std::shared_ptr<RenderManager>& renderManager);
+    void AddUpdatable(const std::shared_ptr<Updatable>& updatable);
     void Run();
   };
 

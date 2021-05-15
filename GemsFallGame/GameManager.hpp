@@ -8,11 +8,11 @@ using namespace GameEngine;
 
 class GameManager
 {
-public:
-  std::shared_ptr<GameWindow> gameWindow;
+private:
   std::shared_ptr<EventManager> eventManager;
   std::shared_ptr<RenderManager> renderManager;
-  GameManager(std::shared_ptr<GameWindow> gameWindow);
+public:
+  GameManager(const std::shared_ptr<GameWindow>& gameWindow);
   void Run();
 };
 

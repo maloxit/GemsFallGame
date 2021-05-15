@@ -11,24 +11,36 @@ void Gem::Update(float deltaTime)
   if (transform.MoveLin(targetPosition, step))
   {
     enabled = false;
-    grid.GemDisabled();
+    grid.GemMoveFinished();
   }
   if (bonus != nullptr)
   {
-    bonus->transform.position = transform.position;
+    bonus->SetPosition(transform.position);
   }
 }
 
-Gem::Gem(Scene& scene, GemsGrid& grid, bool enabled) : GameObject(scene, enabled), grid(grid), transform(Vector2f(), Vector2f())
+bool Gem::HasBonus()
 {
-  type = -1;
+  return bonus != nullptr;
+}
+
+void Gem::ExecuteBonus(GemsGrid::GemCell* gemCell, int row, int column)
+{
+  if (bonus != nullptr)
+  {
+    bonus->Exeñute(grid, gemCell, row, column);
+  }
+}
+
+Gem::Gem(const std::shared_ptr<RenderManager>& renderManager, const Transform& transform, GemsGrid& grid, bool enabled) : Updatable(enabled), grid(grid), transform(transform)
+{
   moveSpeed = 250.f;
   bonus = nullptr;
-  visuals = std::make_shared<RenderObject>(true, transform, RenderLayer::MIDDLE, 3);
-  this->scene.renderManager->AddRenderObject(visuals);
-  visuals->AddPrimitive(RenderPrimitive{ RenderPrimitive::Type::FILL_RECT, Vector4uc(), Vector2f(0.1f,0.1f),Vector2f(0.8f,0.8f) });
-  visuals->AddPrimitive(RenderPrimitive{ RenderPrimitive::Type::RECT, Vector4uc(242, 244, 243, 255), Vector2f(0.1f,0.1f),Vector2f(0.8f,0.8f) });
-  visuals->AddPrimitive(RenderPrimitive{ RenderPrimitive::Type::RECT, Vector4uc(242, 244, 243, 255), Vector2f(0.191f,0.191f),Vector2f(0.618f,0.618f) });
+  visuals = std::make_shared<RenderPrimitivesSet>(true, this->transform, RenderLayer::MIDDLE, 3);
+  renderManager->AddRenderObject(std::static_pointer_cast<RenderObject, RenderPrimitivesSet>(visuals));
+  visuals->AddPrimitive(RenderPrimitivesSet::PrimitiveType::FILL_RECT, Vector4uc(242, 244, 243, 255), Vector2f(0.1f,0.1f),Vector2f(0.8f,0.8f));
+  visuals->AddPrimitive(RenderPrimitivesSet::PrimitiveType::RECT, Vector4uc(242, 244, 243, 255), Vector2f(0.1f,0.1f),Vector2f(0.8f,0.8f));
+  visuals->AddPrimitive(RenderPrimitivesSet::PrimitiveType::RECT, Vector4uc(242, 244, 243, 255), Vector2f(0.191f,0.191f),Vector2f(0.618f,0.618f));
 }
 
 void Gem::Hide()
@@ -39,13 +51,13 @@ void Gem::Hide()
   {
     RemoveBonus();
   }
-  grid.hidenGems.push(this);
+  grid.AddHidenGem(*this);
 }
 
 void Gem::AddBonus(Bonus* bonus)
 {
   this->bonus = bonus;
-  this->bonus->transform = transform;
+  this->bonus->SetPosition(transform.position);
   this->bonus->Show();
 }
 
@@ -62,16 +74,21 @@ void Gem::Show()
   visuals->enabled = true;
 }
 
-void Gem::SetTypeAndPlace(int type, const Vector4uc& color, Vector2f& position, Vector2f& size)
+void Gem::SetType(const Vector4uc& color)
 {
-  this->type = type;
-  this->transform.position = position;
-  this->transform.size = size;
-  visuals->primitives[0].color = color;
+  visuals->ChangePrimitiveColor(0, color);
 }
 
-void Gem::SetType(int type, const Vector4uc& color)
+void Gem::SetTarget(const Vector2f& target)
 {
-  this->type = type;
-  visuals->primitives[0].color = color;
+  targetPosition = target;
+}
+
+void Gem::SetPosition(const Vector2f& position)
+{
+  this->transform.position = position;
+  if (bonus != nullptr)
+  {
+    bonus->SetPosition(transform.position);
+  }
 }

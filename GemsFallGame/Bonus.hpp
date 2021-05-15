@@ -1,17 +1,19 @@
 #pragma once
 #include "Simple2DGameEngine.hpp"
 
-class GemsGrid;
+#include "GemsGrid.hpp"
 
 using namespace GameEngine;
 
-class Bonus : public GameObject
+class Bonus
 {
-public:
+protected:
   Transform transform;
-  std::shared_ptr<RenderObject> visuals;
-  Bonus(Scene& scene, Vector2f& position, Vector2f& size, bool enabled);
-  virtual void Exeñute(GemsGrid& grid, int row, int column) = 0;
+  std::shared_ptr<RenderPrimitivesSet> visuals;
+public:
+  void SetPosition(const Vector2f& position);
+  Bonus(const Transform& transform);
+  virtual void Exeñute(GemsGrid& grid, GemsGrid::GemCell* gemCell, int row, int column) = 0;
   virtual void Hide(GemsGrid& grid) = 0;
   void Show();
 };

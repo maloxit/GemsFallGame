@@ -4,10 +4,11 @@
 
 class Bomb : public Bonus
 {
+private:
+  int power;
 public:
-  Bomb(Scene& scene, Vector2f& position, Vector2f& size, bool enabled);
-  virtual void Exeñute(GemsGrid& grid, int row, int column);
-  virtual void Update(float deltaTime);
+  Bomb(const std::shared_ptr<RenderManager>& renderManager, const Transform& transform, int power = 5);
+  virtual void Exeñute(GemsGrid& grid, GemsGrid::GemCell* gemCell, int row, int column);
   virtual void Hide(GemsGrid& grid);
 };
 

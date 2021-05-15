@@ -45,6 +45,11 @@ namespace GameEngine
       return *this;
     }
 
+    static float ScalarPojection(const Vector2f& left, const Vector2f& right)
+    {
+      return left.x * right.x + left.y * right.y;
+    }
+
     float Norma()
     {
       return sqrtf(x * x + y * y);

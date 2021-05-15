@@ -1,25 +1,29 @@
 #pragma once
 #include "Simple2DGameEngine.hpp"
 
+#include "GemsGrid.hpp"
+
 using namespace GameEngine;
 
-class GemsGrid;
 class Bonus;
 
-class Gem : public GameObject
+class Gem : public Updatable
 {
-public:
-
-  int type;
+private:
   float moveSpeed;
   Transform transform;
   Vector2f targetPosition;
   GemsGrid& grid;
   Bonus* bonus;
-  std::shared_ptr<RenderObject> visuals;
-  Gem(Scene& scene, GemsGrid& grid, bool enabled);
-  void SetTypeAndPlace(int type, const Vector4uc& color, Vector2f& position, Vector2f& size);
-  void SetType(int type, const Vector4uc& color);
+  std::shared_ptr<RenderPrimitivesSet> visuals;
+
+public:
+  bool HasBonus();
+  void ExecuteBonus(GemsGrid::GemCell* gemCell, int row, int column);
+  Gem(const std::shared_ptr<RenderManager>& renderManager, const Transform& transform, GemsGrid& grid, bool enabled);
+  void SetType(const Vector4uc& color);
+  void SetTarget(const Vector2f& position);
+  void SetPosition(const Vector2f& position);
   void Hide();
   void Show();
   void AddBonus(Bonus* bonus);

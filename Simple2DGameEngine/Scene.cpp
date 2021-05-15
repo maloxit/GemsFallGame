@@ -3,33 +3,36 @@
 #include "SDL.h"
 #include "EventManager.hpp"
 #include "RenderManager.hpp"
-#include "GameObject.hpp"
+#include "Updatable.hpp"
 
 namespace GameEngine
 {
-  Scene::Scene(std::shared_ptr<EventManager>& eventManager, std::shared_ptr<RenderManager>& renderManager)
+  Scene::Scene(const std::shared_ptr<EventManager>& eventManager, const std::shared_ptr<RenderManager>& renderManager) : eventManager(eventManager), renderManager(renderManager)
   {
-    this->eventManager = eventManager;
-    this->renderManager = renderManager;
-    gameObjectList = std::make_unique<std::list<std::shared_ptr<GameObject>>>();
   }
 
-  void Scene::AddGameObject(const std::shared_ptr<GameObject>& gameObject)
+  void Scene::AddUpdatable(const std::shared_ptr<Updatable>& updatable)
   {
-    gameObjectList->push_back(gameObject);
+    updateList.push_back(updatable);
   }
 
   void Scene::Update(float dtSeconds)
   {
-    std::list<std::shared_ptr<GameObject>>::iterator gameObject = gameObjectList->begin();
-    std::list<std::shared_ptr<GameObject>>::iterator setEnd = gameObjectList->end();
-    while (gameObject != setEnd)
+    auto updatable = updateList.begin();
+    auto setEnd = updateList.end();
+    while (updatable != setEnd)
     {
-      if ((*gameObject)->enabled)
+      if (updatable->expired())
       {
-        (*gameObject)->Update(dtSeconds);
+        updatable = updateList.erase(updatable);
+        continue;
       }
-      ++gameObject;
+      auto upd = updatable->lock();
+      if (upd->enabled)
+      {
+        upd->Update(dtSeconds);
+      }
+      ++updatable;
     }
   }
 

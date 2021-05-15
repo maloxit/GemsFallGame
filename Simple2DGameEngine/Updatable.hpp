@@ -2,16 +2,13 @@
 #include <memory>
 namespace GameEngine
 {
-  class Scene;
-
-  class GameObject
+  class Updatable
   {
   public:
-    Scene& scene;
     bool enabled;
-    GameObject(Scene& scene, bool enabled);
+    Updatable(bool enabled);
     virtual void Update(float deltaTime) = 0;
-    virtual ~GameObject() {};
+    virtual ~Updatable() {};
   };
 
 }

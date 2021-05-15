@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -90,7 +90,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\SDL2-2.0.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -108,7 +108,7 @@
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>C:\SDL2-2.0.14\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Libs\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -157,9 +157,12 @@
   <ItemGroup>
     <ClInclude Include="EventListener.hpp" />
     <ClInclude Include="EventManager.hpp" />
-    <ClInclude Include="GameObject.hpp" />
+    <ClInclude Include="Updatable.hpp" />
     <ClInclude Include="GameWindow.hpp" />
     <ClInclude Include="RenderManager.hpp" />
+    <ClInclude Include="RenderObject.hpp" />
+    <ClInclude Include="RenderPrimitivesSet.hpp" />
+    <ClInclude Include="RenderText.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Simple2DGameEngine.hpp" />
     <ClInclude Include="Transform.hpp" />
@@ -168,9 +171,12 @@
   <ItemGroup>
     <ClCompile Include="EventListener.cpp" />
     <ClCompile Include="EventManager.cpp" />
-    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Updatable.cpp" />
     <ClCompile Include="GameWindow.cpp" />
     <ClCompile Include="RenderManager.cpp" />
+    <ClCompile Include="RenderObject.cpp" />
+    <ClCompile Include="RenderPrimitivesSet.cpp" />
+    <ClCompile Include="RenderText.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vectorf.cpp" />
